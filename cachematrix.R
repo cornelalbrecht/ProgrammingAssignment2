@@ -46,13 +46,33 @@ cacheSolve <- function(x, ...) {
   }
   # This is the part when a cached inverse does not exist yet.
   # Get the data from the object
+  message("computing matrix inverse")
   data <- x$get()
   # Compute the inverse using solve-function
   inv <- solve(data, ...)
   # Set the inverse in the onject
   x$setinv(inv)
-  Return a matrix that is the inverse of 'x'
+  # Return a matrix that is the inverse of 'x'
   inv
 }
 
+## Example of usage
+# Initialize new object
+mat.obj <- makeCacheMatrix()
+# Add 3x3 matrix data to object
+mat <- matrix(c(8,9,3,5,4,7,6,3,4), nrow=3)
+mat.obj$set(mat)
 
+# Get Inv - should be NULL
+print(mat.obj$getinv())
+# Now run cacheSolve
+cacheSolve(mat.obj)
+
+# Get Inv - should be computed now
+print(mat.obj$getinv())
+
+# Run cacheSolve again to see if it pulls from the cache
+cacheSolve(mat.obj)
+print(mat.obj$getinv())
+
+              
